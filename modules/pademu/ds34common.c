@@ -84,7 +84,7 @@ void translate_pad_ds3(const struct ds3report *in, struct ds2report *out, u8 pre
     }
 }
 
-void translate_pad_ps3(const struct ps3report *in, struct ds2report *out, u8 pressure_emu)
+void translate_pad_ps3(const struct ps3gamepadreport *in, struct ds2report *out, u8 pressure_emu)
 {
     out->nButtonStateL = ~in->ButtonStateL;
     out->nButtonStateH = ~in->ButtonStateH;
