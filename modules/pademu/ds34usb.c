@@ -128,11 +128,14 @@ int usb_connect(int devId)
     if (device->idProduct == DS3_PID) {
         ds34pad[pad].type = DS3;
         epCount = interface->bNumEndpoints - 1;
-    } else if (device->idProduct == GUITAR_HERO_PS3_PID || device->idProduct == 0x00AE) {
+    } else if (device->idProduct == GUITAR_HERO_PS3_PID) {
         ds34pad[pad].type = GUITAR_GH;
         epCount = interface->bNumEndpoints - 1;
     } else if (device->idProduct == ROCK_BAND_PS3_PID) {
         ds34pad[pad].type = GUITAR_RB;
+        epCount = interface->bNumEndpoints - 1;
+    } else if (device->idProduct == 0x00AE) {
+        ds34pad[pad].type = PS3_GAMEPAD;
         epCount = interface->bNumEndpoints - 1;
     } else {
         ds34pad[pad].type = DS4;
@@ -277,6 +280,14 @@ static void readReport(u8 *data, int pad_idx)
         report = (struct ds3guitarreport *)data;
 
         translate_pad_guitar(report, &pad->ds2, pad->type == GUITAR_GH);
+        padMacroPerform(&pad->ds2, report->PSButton);
+    }
+    if (pad->type == PS3_GAMEPAD) {
+        struct ps3gamepadreport *report;
+
+        report = (struct ps3gamepadreport *)data;
+
+        translate_pad_ps3(report, &pad->ds2, 0);
         padMacroPerform(&pad->ds2, report->PSButton);
     }
     if (data[0]) {

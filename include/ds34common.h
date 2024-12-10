@@ -216,6 +216,61 @@ struct ds3guitarreport
 
 } __attribute__((packed));
 
+
+struct ps3gamepadreport
+{
+    union
+    {
+        uint16_t ButtonState;
+        struct
+        {
+            uint8_t ButtonStateL; // Main buttons low byte
+            uint8_t ButtonStateH; // Main buttons high byte
+        };
+        struct
+        {
+            uint16_t Square      : 1;
+            uint16_t Cross     : 1;
+            uint16_t Circle       : 1;
+            uint16_t Triangle    : 1;
+            uint16_t L1        : 1;
+            uint16_t R1        : 1;
+            uint16_t L2        : 1;
+            uint16_t R2        : 1;
+            uint16_t Select    : 1;
+            uint16_t Start     : 1;
+            uint16_t L3        : 1;
+            uint16_t R3        : 1;
+            uint16_t PSButton  : 1;
+            uint16_t           : 1;
+            uint16_t           : 1;
+            uint16_t           : 1;
+        };
+    };
+    uint8_t Dpad; // hat format, 0x08 is released, 0=N, 1=NE, 2=E, 3=SE, 4=S, 5=SW, 6=W, 7=NW
+    uint8_t LeftStickX;       // left Joystick X axis 0 - 255, 128 is mid
+    uint8_t LeftStickY;       // left Joystick Y axis 0 - 255, 128 is mid
+    uint8_t RightStickX;      // right Joystick X axis 0 - 255, 128 is mid
+    uint8_t RightStickY;      // right Joystick Y axis 0 - 255, 128 is mid
+    uint8_t PressureLeft; // digital Pad Right + Yellow button Pressure 0 - 255 (if both are pressed, then they cancel eachother out)
+    uint8_t PressureRight;        // digital Pad Left button Pressure 0 - 255
+    uint8_t PressureUp;     // digital Pad Up + Green button Pressure 0 - 255 (if both are pressed, then they cancel eachother out)
+    uint8_t PressureDown;  // digital Pad Down + Orange button Pressure 0 - 255 (if both are pressed, then they cancel eachother out)
+    uint8_t PressureTriangle;        // digital Pad Blue button Pressure 0 - 255
+    uint8_t PressureCircle;         // digital Pad Red button Pressure 0 - 255
+    uint8_t PressureCross;         // digital Pad Red button Pressure 0 - 255
+    uint8_t PressureSquare;         // digital Pad Red button Pressure 0 - 255
+    uint8_t PressureL1;         // digital Pad Red button Pressure 0 - 255
+    uint8_t PressureR1;         // digital Pad Red button Pressure 0 - 255
+    uint8_t PressureL2;         // digital Pad Red button Pressure 0 - 255
+    uint8_t PressureR2;         // digital Pad Red button Pressure 0 - 255
+    int16_t AccelX;
+    int16_t AccelZ;
+    int16_t AccelY;
+    int16_t GyroZ;
+
+} __attribute__((packed));
+
 enum DS4DpadDirections {
     DS4DpadDirectionN = 0,
     DS4DpadDirectionNE,
