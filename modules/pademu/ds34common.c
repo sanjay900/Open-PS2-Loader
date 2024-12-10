@@ -86,19 +86,34 @@ void translate_pad_ds3(const struct ds3report *in, struct ds2report *out, u8 pre
 
 void translate_pad_ps3(const struct ps3gamepadreport *in, struct ds2report *out, u8 pressure_emu)
 {
-    out->nButtonStateL = ~in->ButtonStateL;
-    out->nButtonStateH = ~in->ButtonStateH;
 
     out->RightStickX = in->RightStickX;
     out->RightStickY = in->RightStickY;
     out->LeftStickX = in->LeftStickX;
     out->LeftStickY = in->LeftStickY;
 
+    static const u8 dpad_mapping[] = {
+        (DS2ButtonUp),
+        (DS2ButtonUp | DS2ButtonRight),
+        (DS2ButtonRight),
+        (DS2ButtonDown | DS2ButtonRight),
+        (DS2ButtonDown),
+        (DS2ButtonDown | DS2ButtonLeft),
+        (DS2ButtonLeft),
+        (DS2ButtonUp | DS2ButtonLeft),
+        0,
+    };
+
+    u8 dpad = in->Dpad > DS4DpadDirectionReleased ? DS4DpadDirectionReleased : in->Dpad;
+
+    out->nButtonStateL = ~(in->Select | in->L3 << 1 | in->R3 << 2 | in->Start << 3 | dpad_mapping[dpad]);
+    out->nButtonStateH = ~(in->L2 | in->R2 << 1 | in->L1 << 2 | in-> R1 << 3 | in->Triangle << 4 | in->Circle << 5 | in->Cross << 6 | in->Square << 7);
+
     if (pressure_emu) { // needs emulating pressure buttons
-        out->PressureRight = in->Right * 255;
-        out->PressureLeft = in->Left * 255;
-        out->PressureUp = in->Up * 255;
-        out->PressureDown = in->Down * 255;
+        out->PressureRight = (!out->nRight) * 255;
+        out->PressureLeft = (!out->nLeft) * 255;
+        out->PressureUp = (!out->nUp) * 255;
+        out->PressureDown = (!out->nDown) * 255;
 
         out->PressureTriangle = in->Triangle * 255;
         out->PressureCircle = in->Circle * 255;
