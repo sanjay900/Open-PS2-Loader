@@ -346,6 +346,16 @@ struct ds4report
  */
 void translate_pad_ds3(const struct ds3report *in, struct ds2report *out, uint8_t pressure_emu);
 
+
+/**
+ * Translate PS3 pad data into DS2 pad data.
+ * @param in PS3 report
+ * @param out DS2 report
+ * @param pressure_emu set to 1 to extrapolate digital buttons into button pressure
+ * NOTE: if set to 0, ds3report must be large enough for that data to be read!
+ */
+void translate_pad_ds3(const struct ps3gamepadreport *in, struct ds2report *out, uint8_t pressure_emu);
+
 /**
  * Translate PS3 Guitar pad data into DS2 Guitar pad data.
  * @param in PS3 Guitar report
