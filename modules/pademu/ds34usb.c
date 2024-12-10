@@ -128,7 +128,7 @@ int usb_connect(int devId)
     if (device->idProduct == DS3_PID) {
         ds34pad[pad].type = DS3;
         epCount = interface->bNumEndpoints - 1;
-    } else if (device->idProduct == GUITAR_HERO_PS3_PID) {
+    } else if (device->idProduct == GUITAR_HERO_PS3_PID || device->idProduct == 0x00AE) {
         ds34pad[pad].type = GUITAR_GH;
         epCount = interface->bNumEndpoints - 1;
     } else if (device->idProduct == ROCK_BAND_PS3_PID) {
