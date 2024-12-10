@@ -89,6 +89,8 @@ int usb_probe(int devId)
 
     if (device->idVendor == DS34_VID && (device->idProduct == DS3_PID || device->idProduct == DS4_PID || device->idProduct == DS4_PID_SLIM))
         return 1;
+    if (device->idVendor == 0x0F0D && device->idProduct == 0x00AE)
+        return 1;
 
     return 0;
 }
@@ -135,6 +137,7 @@ int usb_connect(int devId)
         ds34pad[pad].type = GUITAR_RB;
         epCount = interface->bNumEndpoints - 1;
     } else if (device->idProduct == 0x00AE) {
+        // TODO: instead of hardcoding a PID here, grab the HID report and trawl it for signs of a PS3 controller.
         ds34pad[pad].type = PS3_GAMEPAD;
         epCount = interface->bNumEndpoints - 1;
     } else {
